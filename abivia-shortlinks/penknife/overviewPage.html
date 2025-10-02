@@ -1,0 +1,79 @@
+<div class="wrap abisl-admin">
+    <div class="abisl-header">
+        <h1><span class="dashicons dashicons-chart-bar"></span> Analytics Overview</h1>
+        <p class="description">Monitor your short URL performance and manage your links</p>
+    </div>
+    {{?message}}
+    <div class="notice notice-success is-dismissible">
+        <p>{{message}}</p>
+    </div>
+    {{/?message}}
+
+    <div class="abisl-card">
+        {{?allLinks}}
+        <div class="analytics-actions">
+            <a href="{{createUrl}}" class="button button-primary">
+                <span class="dashicons dashicons-plus-alt"></span> Create New Link
+            </a>
+            <button class="button abisl-export-overview" type="button"><span
+                    class="dashicons dashicons-download"></span>
+                Export All CSV
+            </button>
+        </div>
+
+        <div class="table-container">
+            <table class="wp-list-table widefat fixed striped">
+                <thead>
+                <tr>
+                    <th>Short URL</th>
+                    <th class="abisl-date">Last Click At</th>
+                    <th class="abisl-count">#Clicks</th>
+                    <th class="abisl-count">#Links</th>
+                    <th class="abisl-flag">GeoCoded</th>
+                    <th class="abisl-type">Type</th>
+                    <th class="abisl-flag">Password</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{@allLinks}}
+                <tr>
+                    <td>
+                        <strong><a href="{{loop.shortUrl}}" target="_blank">{{loop.alias}}</a></strong>
+                        <div class="row-actions">
+                            <span class="copy"><a href="#" class="abisl-copy" data-clipboard-text="{{loop.copyUrl}}">Copy URL</a></span>
+                            | <span class="edit"><a href="{{loop.editUrl}}">Edit</a></span>
+                            | <span class="view"><a href="{{loop.viewUrl}}">View</a></span>
+                            | <span class="delete">
+                                <a href="{{loop.deleteUrl}}" onclick="return confirm('Are you sure you want to delete this link?')">
+                                    Delete
+                                </a>
+                            </span>
+                        </div>
+                    </td>
+                    <td class="abisl-date">{{loop.lastClick,No Clicks}}</td>
+                    <td class="abisl-count">{{loop.totalClicks}}</td>
+                    <td class="abisl-count">{{loop.totalLinks}}</td>
+                    <td class="abisl-flag">{{loop.geo}}</td>
+                    <td class="abisl-type">{{loop.linkType}}</td>
+                    <td class="abisl-flag">{{loop.protected}}</td>
+                    <td>
+                        <a href="{{loop.viewUrl}}" class="button button-small">
+                            <span class="dashicons dashicons-chart-bar"></span> View
+                        </a>
+                    </td>
+                </tr>
+                {{/@allLinks}}
+                </tbody>
+            </table>
+        </div>
+        {{!?allLinks}}
+        <div class="no-data">
+            <div class="no-data-icon"><span class="dashicons dashicons-admin-links"></span></div>
+            <h3>No Short Links Defined</h3>
+            <p>Create your first short link to start tracking analytics.</p>
+            <a href="{{createUrl}}" class="button button-primary">Create Short Link</a>
+        </div>
+        {{/?allLinks}}
+    </div>
+</div>

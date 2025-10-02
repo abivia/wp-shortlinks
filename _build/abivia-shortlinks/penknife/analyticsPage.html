@@ -1,0 +1,76 @@
+<div class="wrap abisl-admin">
+    <div class="abisl-header">
+        <h1><span class="dashicons dashicons-chart-bar"></span> Analytics for <code>{{alias}}</code></h1>
+        <p class="description">Detailed click statistics for your short URL</p>
+    </div>
+    <div class="abisl-card">
+        <div class="analytics-actions">
+            <a href="{{analyticsUrl}}" class="button button-secondary">
+                <span class="dashicons dashicons-arrow-left-alt"></span> Back to Overview
+            </a>
+            {{?viewDate}}
+            <button class="button abisl-export-detail" type="button">
+                <span class="dashicons dashicons-download"></span> Export CSV
+            </button>
+            {{/?viewDate}}
+        </div>
+
+        {{?dailyStats}}
+        <div class="daily-stats-container">
+            <h3>Daily Click Statistics</h3>
+            <table class="wp-list-table widefat fixed striped daily-stats">
+            <thead><tr><th>Date</th><th>Clicks</th><th>Actions</th></tr></thead>
+            <tbody>
+            {{@dailyStats}}
+                <tr>
+                    <td>{{loop.click_date}}</td>
+                    <td>{{loop.clicks}}</td>
+                    <td><a href="{{loop.detail}}" class="button button-small">View Details</a></td>
+                </tr>
+            {{/@dailyStats}}
+            </tbody></table>
+        </div>
+        {{!?dailyStats}}
+        <div class="no-data"><p>No clicks recorded for this link.</p></div>
+        {{/?dailyStats}}
+
+    {{?viewDate}}
+        {{?clickRows}}
+        <div class="table-container">
+            <h3>Click Details for {{viewDate}}</h3>
+            <a href="{{returnUrl}}" class="button button-small">
+                <span class="dashicons dashicons-arrow-left-alt"></span> Back to Daily Stats
+            </a>
+            <table class="wp-list-table widefat fixed striped">
+                <thead><tr><th class="abisl-date">Date</th><th class="abisl-ip">IP</th><th>Target URL</th><th>User Agent</th></tr></thead>
+                <tbody>
+                {{@clickRows}}
+                <tr>
+                    <td>{{loop.clickedAt}}</td>
+                    <td>{{loop.ipAddress}}</td>
+                    <td>{{loop.destinationUrl}}</td>
+                    <td><small>{{loop.userAgent}}</small></td>
+                </tr>
+                {{/@clickRows}}
+                </tbody>
+            </table>
+            {{?paginated}}
+            <div class="abisl-pagination">
+                {{?prevUrl}}
+                <a class="button" href="{{firstUrl}}">&laquo; First</a>
+                <a class="button" href="{{prevUrl}}">&lt; Previous</a>
+                {{/?prevUrl}}
+                <span class="paging-text">Page {{currentPage}} of {{totalPages}}</span>
+                {{?nextUrl}}
+                <a class="button" href="{{nextUrl}}">Next &gt;</a>
+                <a class="button" href="{{lastUrl}}">Last &raquo;</a>
+                {{/?nextUrl}}
+            </div>
+            {{/?paginated}}
+        </div>
+        {{!?clickRows}}
+        <div class="no-data"><p>No clicks recorded for this date.</p></div>
+        {{/?clickRows}}
+    {{/?viewDate}}
+    </div>
+</div>

@@ -1,0 +1,137 @@
+<!-- editForm -->
+{{?messages.form}}
+<div class="notice notice-success is-dismissible">
+    <p>{{messages.form}}</p>
+</div>
+{{/?messages.form}}
+<form method="post" class="abisl-form">
+    {{nonce}}
+    <input type="hidden" name="abisl_linkId" value="{{linkId}}">
+    <div class="form-field">
+        <label for="abisl_alias">Short URL Slug</label>
+        <input type="text" id="abisl_alias" name="abisl_alias" required class="regular-text" value="{{alias}}">
+        {{error.alias}}
+        <p class="description">Only letters, numbers, hyphens, and underscores allowed (e.g.,
+            "my-link_123")</p>
+    </div>
+
+    <div class="form-field">
+        <label for="abisl_text">Default Text</label>
+        <input type="text" id="abisl_text" name="abisl_text" class="regular-text" value="{{text}}">
+        {{error.text}}
+        <p class="description">Text to use for the link, can be overridden.</p>
+    </div>
+
+    <div class="form-field" id="abisl_destinations_container">
+        <label for="abisl_destinations">Destination URLs</label>
+        <textarea id="abisl_destinations" name="abisl_destinations" rows="5" class="large-text code"
+                  placeholder="One URL per line">{{destinations}}</textarea>
+        {{error.destinations}}
+        <p class="description"> One URL per line. Required. More options below.</p>
+    </div>
+
+    <div class="form-field">
+        <label class="checkbox-container">
+            <input type="checkbox" name="abisl_rotate" id="abisl_rotate" {{rotate}}>
+            <span class="checkmark"></span>
+            Enable URL Rotation
+        </label>
+        {{error.rotate}}
+        <p class="description">When enabled, visitors will be randomly redirected to one of the matching URLs</p>
+    </div>
+
+    <div class="form-field">
+        <label for="abisl_http">Redirection mode</label>
+        <select name="abisl_http" id="abisl_http">
+            <option value="307" {{select307}}>307 Temporary (no caching)</option>
+            <option value="302" {{select302}}>302 Temporary (cached)</option>
+            <option value="301" {{select301}}>301 Permanent</option>
+        </select>
+        {{error.httpCode}}
+        <p class="description">Code when visitors are redirected (307 recommended).</p>
+    </div>
+
+    <div class="form-field">
+        <label for="abisl_password">Password Protection (optional)</label>
+        <input type="text" id="abisl_password" name="abisl_password" class="regular-text" value="{{password}}">
+        {{error.password}}
+        <p class="description">If set, visitors will need to enter this password to access the URL</p>
+    </div>
+
+    {{submit}}
+</form>
+<h3>Destination Link Formats</h3>
+<p>Note:</p>
+<ol>
+    <li>Case is not significant in geo-selectors. "CA", "ca", "Ca" and "cA" are equivalent.</li>
+    <li>
+        Links with the <strong>exact</strong> same text and URL will not be duplicated.
+        Here case is significant.
+    </li>
+    <li>If multiple links match and URL rotation is not set, the first link is used.</li>
+</ol>
+<table>
+    <tr>
+        <td class="va-top">Simple link</td>
+        <td>https://example.com</td>
+        <td>Appears as the default text. if no default is set, then "https://example.com"</td>
+    </tr>
+    <tr>
+        <td class="va-top">Link with text</td>
+        <td>my link|https://example.com</td>
+        <td>Appears as "my link"</td>
+    </tr>
+
+    <tr>
+        <td class="va-top">Geo-targeted by country</td>
+        <td>
+            [CA]https://example.ca<br>
+            [US]https://example.us<br>
+            [DK|GL]https://example.dk<br>
+            [?]https://example.com<br>
+        </td>
+        <td>
+            Canadians will example.ca,<br>
+            Americans will example.us,<br>
+            People in Denmark and Greenland will see example.dk<br>
+            Any other location will see example.com.
+        </td>
+    </tr>
+    <tr>
+        <td class="va-top">Geo-targeted by country and region</td>
+        <td>
+            [CA,ON]https://example.ca/ontario<br>
+            [CA,AB]https://example.ca/alberta<br>
+            [CA,NT|NU|YT]https://example.ca/north<br>
+            [CA,?]https://example.ca/alberta<br>
+            [?]https://example.com<br>
+        </td>
+        <td>
+            Ontarians will see a link to example.ca/ontario,<br>
+            Albertans will see a link to example.ca/alberta,<br>
+            People in the Northwest Territories, Nunavut, and Yukon will see a link to example.ca/north,<br>
+            All other Canadians will see a link to example.ca,<br>
+            Any other location will see example.com.
+        </td>
+    </tr>
+    <tr>
+        <td class="va-top">Geo-targeted by country, region, and town</td>
+        <td>
+            [CA,ON,Toronto]https://example.ca/toronto<br>
+            [CA,ON,Ottawa]https://example.ca/ottawa<br>
+            [CA,ON,?]https://example.ca/ontario<br>
+            [CA,AB]https://example.ca/alberta<br>
+            [CA,?]https://example.ca/<br>
+            [?]https://example.com<br>
+        </td>
+        <td>
+            People in Toronto will see a link to example.ca/toronto<br>
+            People in Ottawa will see a link to example.ca/ottawa<br>
+            Other Ontarians will see a link to example.ca/ontario<br>
+            Albertans will see a link to example.ca/alberta<br>
+            All other Canadians will see a link to example.ca<br>
+            Any other location will see example.com.
+        </td>
+    </tr>
+</table>
+<!-- end editForm -->

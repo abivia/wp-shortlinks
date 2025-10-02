@@ -1,0 +1,57 @@
+<div class="wrap abisl-admin">
+    <div class="abisl-header">
+        <h1><span class="dashicons dashicons-admin-links"></span> Edit Short Link</h1>
+        <p class="description">Manage your short URL: <code>link-alias</code></p>
+    </div>
+
+    <div class="abisl-card">
+        <form method="post" class="abisl-form">
+            your nonce here
+
+            <div class="form-field">
+                <label>Short URL</label>
+                <div class="short-url-display">
+                    <code>slug/alias</code>
+                    <a href="#alias" target="_blank" class="button button-small">
+                        <span class="dashicons dashicons-external"></span> Test
+                    </a>
+                </div>
+            </div>
+
+            <div class="form-field" id="abisl_destinations_container">
+                <label for="abisl_destinations">Destination URLs</label>
+                <textarea id="abisl_destinations" name="abisl_destinations" rows="5"
+                          class="large-text code">link1
+link2</textarea>
+                <p class="description">One URL per line. Required.</p>
+            </div>
+
+            <div class="form-field">
+                <label class="checkbox-container">
+                    <input type="checkbox" name="abisl_rotate" id="abisl_rotate"
+                           value="1" checked>
+                    <span class="checkmark"></span>
+                    Enable URL Rotation
+                </label>
+            </div>
+
+            <div class="form-field">
+                <label for="abisl_password">Password Protection</label>
+                <input type="text" id="abisl_password" name="abisl_password"
+                       value="password" class="regular-text">
+            </div>
+
+            <div class="form-actions">
+                submit
+                <a href="#analytics" class="button button-secondary">
+                    <span class="dashicons dashicons-arrow-left-alt"></span> Back to Analytics
+                </a>
+                <a href="#delete"
+                   class="button button-delete"
+                   onclick="return confirm('Are you sure you want to permanently delete this short link?');">
+                    <span class="dashicons dashicons-trash"></span> Delete Link
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
