@@ -1,32 +1,30 @@
-# Abivia Link Shortener
-
-Contributors: Abivia (based on Custom Link Shortener by Lukastech)
-Tags: url-shortener, custom-links, click-tracking, links-shortener, links
-Requires at least: 6.0
-Tested up to: 6.8
-Version: 0.1.0
-License: GPLv3 or later
-License URI:** https://www.gnu.org/licenses/gpl-3.0.html
-Requires PHP: 8.4 or later.
+# Abivia Link Shortener for Wordpress
 
 Advanced URL shortener for WordPress with analytics, link rotation, geotargeting,
-and password protection.
+and password protection (based on Custom Link Shortener by Lukastech).
+
+License: GPLv3 or later. Requires PHP: 8.4 or later.
 
 ## Features
 
-- Create custom short URLs (e.g., `yoursite.com/l/product`)
+- Create custom short URLs (e.g., `yoursite.com/l/product`).
 - Detailed click analytics with:
   - Visitor IP addresses
   - User agents
   - Timestamps
-- URL rotation (randomize destinations)
-- Password protection for private links
-- CSV export for all analytics data
-- Edit existing short URLs
-- Delete short URLs with confirmation
-- Clean WordPress admin interface
-- Create One Url that redirects to multiple destination URLs.
+- URL rotation (randomize destinations).
+- Location-specific targets: send visitors to the best link for their location.
+- Password protection for private links.
+- CSV export for all analytics data.
+- Edit existing short URLs.
+- Delete short URLs with confirmation.
+- Clean WordPress admin interface.
 - Doesn't suggest you create a new link in every post/page/whatever.
+
+## PRO Features
+
+- None, nothing, nada. This plugin doesn't limit any feature.
+- There is no nagging for support, no pop-up asking for ratings or "feedback". 
 
 ## Installation
 
@@ -135,7 +133,7 @@ All associated data (destinations, click records) are permanently deleted.
 
 ## Support
 
-For support, meh.
+If you find a problem open an issue on github.
 
 ---
 
