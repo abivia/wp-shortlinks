@@ -4,7 +4,7 @@ Contributors: Abivia (based on Custom Link Shortener by Lukastech)
 Tags: url-shortener, custom-links, click-tracking, links-shortener, links
 Requires at least: 6.0
 Tested up to: 6.8
-Stable tag: 1.0.0
+Version: 0.1.0
 License: GPLv3 or later
 License URI:** https://www.gnu.org/licenses/gpl-3.0.html
 Requires PHP: 8.4 or later.

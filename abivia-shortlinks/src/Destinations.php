@@ -30,7 +30,7 @@ class Destinations extends DbTable
         return implode("\n", $lines);
     }
 
-    public function createTable()
+    public function createTable(): void
     {
         $charsetCollate = $this->dbc->get_charset_collate();
         $sqlDestinations = "CREATE TABLE $this->dbTable ("
@@ -44,7 +44,7 @@ class Destinations extends DbTable
         dbDelta($sqlDestinations);
     }
 
-    public function delete(array $where)
+    public function delete(array $where): void
     {
         $this->dbc->delete($this->dbTable, $where, $this->whereFormats($where));
     }
@@ -132,17 +132,17 @@ class Destinations extends DbTable
         return $this->list;
     }
 
-    public function offsetGet(mixed $offset): Destination
+    public function offsetGet(mixed $key): Destination
     {
-        return $this->list[$offset];
+        return $this->list[$key];
     }
 
-    public function offsetSet(mixed $offset, mixed $value): void
+    public function offsetSet(mixed $key, mixed $value): void
     {
         if (!$value instanceof Destination) {
             throw new LogicException('Can only store Destination objects here.');
         }
-        $this->list[$offset] = $value;
+        $this->list[$key] = $value;
     }
 
     public function parse(string $text): self

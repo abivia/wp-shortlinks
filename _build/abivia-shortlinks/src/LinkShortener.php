@@ -201,8 +201,9 @@ class LinkShortener
                         return $map[$attr] ?? null;
                     }
                 );
-            } catch (ParseError) {
-                file_put_contents(__DIR__ . '/../map.json', json_encode($map));
+            } catch (ParseError $exception) {
+                $this->message = 'Template error:' . $exception->getMessage();
+                $this->overviewPage();
             }
 
             $csvFilename = 'analytics_' . esc_js($link->alias) . '_' . esc_js($viewDate) . '.csv';

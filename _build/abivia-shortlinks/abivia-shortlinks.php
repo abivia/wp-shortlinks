@@ -3,7 +3,7 @@
 Plugin Name: Abivia Short Links
 Description: A custom URL shortener with analytics, rotating links, and password protection.
 Version: 1.0.0
-Author: Abivia
+Author: Abivia Inc.
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Requires at least: 5.0

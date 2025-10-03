@@ -27,6 +27,10 @@ class LinkShortener
         $this->penknife = new Penknife()->includePath(__DIR__ . '/../penknife');
     }
 
+    /**
+     * @return void
+     * @noinspection PhpUnused
+     */
     public function activate(): void
     {
         $this->createDb();

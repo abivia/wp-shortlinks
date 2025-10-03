@@ -1,4 +1,7 @@
 <?php
+/**
+ * Script to generate a clean no-dev copy of the plugin in the build directory.
+ */
 declare(strict_types=1);
 require_once 'abivia-shortlinks/vendor/autoload.php';
 

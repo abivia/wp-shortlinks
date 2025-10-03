@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Abivia\Wp\LinkShortener;
 
@@ -14,7 +15,7 @@ class Exporter
         $this->dbc = $dbc;
     }
 
-    private function close()
+    private function close(): void
     {
         fclose($this->outputFile);
     }
@@ -38,7 +39,7 @@ class Exporter
         wp_die();
     }
 
-    private function detail()
+    private function detail(): void
     {
         $this->open();
         // Export detailed click data for a specific link and date
@@ -60,7 +61,7 @@ class Exporter
         $this->close();
     }
 
-    private function open()
+    private function open(): void
     {
         header('Content-Type: text/csv');
         header(
@@ -71,7 +72,7 @@ class Exporter
         $this->outputFile = fopen('php://output', 'w');
     }
 
-    private function overview()
+    private function overview(): void
     {
         $this->open();
         $clicks = new Clicks($this->dbc);

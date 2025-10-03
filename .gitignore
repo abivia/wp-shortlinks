@@ -1,1 +1,6 @@
+/.idea
 /lukastech/
+/wp-stub/
+/vendor/
+/tests/.phpunit.result.cache
+/abivia-shortlinks/vendor/

@@ -68,6 +68,8 @@ When a short code has multiple destinations:
 Links can be set to apply only to specific regions based on an IP lookup.
 To limit a link, add the geo-filter code in brackets before the target URL.
 
+IP address lookups are provided by https://ipapi.co/ and only used when a link is geocoded.
+
 ### Password Protection
 - Set a password when creating/editing links
 - Visitors must enter password before redirect
