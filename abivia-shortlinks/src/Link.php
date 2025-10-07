@@ -6,7 +6,7 @@ namespace Abivia\Wp\LinkShortener;
 class Link
 {
     public string $alias = '';
-    public string $defaultText;
+    public string $defaultText = '';
     public Destinations $destinations;
     public int $geoCoded = 0;
     public int $httpCode = 307;
@@ -20,13 +20,13 @@ class Link
             return null;
         }
         $link = new self();
-        $link->linkId = $source->linkId;
+        $link->linkId = (int) $source->linkId;
         $link->alias = $source->alias;
         $link->defaultText = $source->defaultText;
         $link->password = $source->password;
-        $link->isRotating = $source->isRotating;
-        $link->geoCoded = $source->geoCoded;
-        $link->httpCode = $source->httpCode;
+        $link->isRotating = (int) $source->isRotating;
+        $link->geoCoded = (int) $source->geoCoded;
+        $link->httpCode = (int) $source->httpCode;
 
         return $link;
     }

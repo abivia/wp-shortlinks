@@ -1,6 +1,107 @@
 {
     "packages": [
         {
+            "name": "abivia/cogs",
+            "version": "2.1.0",
+            "version_normalized": "2.1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/abivia/cogs.git",
+                "reference": "a8b810ffcbb69d76f433712c2829e6b38be5c2b8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/abivia/cogs/zipball/a8b810ffcbb69d76f433712c2829e6b38be5c2b8",
+                "reference": "a8b810ffcbb69d76f433712c2829e6b38be5c2b8",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.1"
+            },
+            "time": "2022-09-26T05:05:04+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Abivia\\Cogs\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alan Langford",
+                    "email": "foss@abivia.com",
+                    "homepage": "https://foss.abivia.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Interfaces for Connectable Real World Entities.",
+            "keywords": [
+                "abivia"
+            ],
+            "support": {
+                "issues": "https://github.com/abivia/cogs/issues",
+                "source": "https://github.com/abivia/cogs/tree/2.1.0"
+            },
+            "install-path": "../abivia/cogs"
+        },
+        {
+            "name": "abivia/geocoding",
+            "version": "3.0.0",
+            "version_normalized": "3.0.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/abivia/geocoding.git",
+                "reference": "ede6d58bd7c24cdf799881b1e272e00d520eec86"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/abivia/geocoding/zipball/ede6d58bd7c24cdf799881b1e272e00d520eec86",
+                "reference": "ede6d58bd7c24cdf799881b1e272e00d520eec86",
+                "shasum": ""
+            },
+            "require": {
+                "abivia/cogs": "^2",
+                "ext-curl": "*",
+                "ext-pdo": "*",
+                "mlocati/ip-lib": "^1",
+                "php": "^8.2"
+            },
+            "time": "2025-10-06T20:59:53+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Abivia\\Geocode\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alan Langford",
+                    "email": "foss@abivia.com",
+                    "homepage": "https://foss.abivia.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Geocoding support.",
+            "keywords": [
+                "abivia",
+                "geocode"
+            ],
+            "support": {
+                "issues": "https://github.com/abivia/geocoding/issues",
+                "source": "https://github.com/abivia/geocoding/tree/3.0.0"
+            },
+            "install-path": "../abivia/geocoding"
+        },
+        {
             "name": "abivia/penknife",
             "version": "1.2.2",
             "version_normalized": "1.2.2.0",
@@ -52,6 +153,80 @@
                 "source": "https://github.com/abivia/penknife/tree/1.2.2"
             },
             "install-path": "../abivia/penknife"
+        },
+        {
+            "name": "mlocati/ip-lib",
+            "version": "1.21.0",
+            "version_normalized": "1.21.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mlocati/ip-lib.git",
+                "reference": "b5d38cdcbfc1516604d821a1f3f4a1638f327267"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mlocati/ip-lib/zipball/b5d38cdcbfc1516604d821a1f3f4a1638f327267",
+                "reference": "b5d38cdcbfc1516604d821a1f3f4a1638f327267",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "ext-pdo_sqlite": "*",
+                "phpunit/phpunit": "^4.8 || ^5.7 || ^6.5 || ^7.5 || ^8.5 || ^9.5"
+            },
+            "time": "2025-09-24T13:58:50+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "IPLib\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michele Locati",
+                    "email": "mlocati@gmail.com",
+                    "homepage": "https://github.com/mlocati",
+                    "role": "Author"
+                }
+            ],
+            "description": "Handle IPv4, IPv6 addresses and ranges",
+            "homepage": "https://github.com/mlocati/ip-lib",
+            "keywords": [
+                "IP",
+                "address",
+                "addresses",
+                "ipv4",
+                "ipv6",
+                "manage",
+                "managing",
+                "matching",
+                "network",
+                "networking",
+                "range",
+                "subnet"
+            ],
+            "support": {
+                "issues": "https://github.com/mlocati/ip-lib/issues",
+                "source": "https://github.com/mlocati/ip-lib/tree/1.21.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sponsors/mlocati",
+                    "type": "github"
+                },
+                {
+                    "url": "https://paypal.me/mlocati",
+                    "type": "other"
+                }
+            ],
+            "install-path": "../mlocati/ip-lib"
         }
     ],
     "dev": false,

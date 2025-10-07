@@ -6,6 +6,9 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'IPLib\\' => array($vendorDir . '/mlocati/ip-lib/src'),
     'Abivia\\Wp\\LinkShortener\\' => array($baseDir . '/src'),
     'Abivia\\Penknife\\' => array($vendorDir . '/abivia/penknife/Penknife'),
+    'Abivia\\Geocode\\' => array($vendorDir . '/abivia/geocoding/src'),
+    'Abivia\\Cogs\\' => array($vendorDir . '/abivia/cogs/src'),
 );

@@ -36,11 +36,13 @@ License: GPLv3 or later. Requires PHP: 8.4 or later.
 
 ### Creating Short Links
 1. Go to Custom Link Shortener in your admin menu
-2. Enter:
+2. In settings select the prefix for your short links and your IP lookup provider.
+Note: the ipapi.co provider will allow a limited number of lookups without a key.
+3. Enter:
    - Your preferred alias (e.g., "product")
    - Destination URL(s) (one per line for rotation)
-3. Optional: Enable rotation or set a password
-4. Click "Create Short Link"
+4. Optional: Enable rotation or set a password
+5. Click "Create Short Link"
 
 ### Viewing Analytics
 1. Go to Custom Link Shortener → Analytics
@@ -66,7 +68,7 @@ When a short code has multiple destinations:
 Links can be set to apply only to specific regions based on an IP lookup.
 To limit a link, add the geo-filter code in brackets before the target URL.
 
-IP address lookups are provided by https://ipapi.co/ and only used when a link is geocoded.
+IP address lookups only performed when a link is geocoded.
 
 ### Password Protection
 - Set a password when creating/editing links
@@ -92,9 +94,9 @@ Useful when filtering links by geocode. Note that:
 
 Optional attributes:
 - empty: text to display if all links are filtered by geocoding, an empty string if not provided.
-- list_class: a class or classes to apply to the overall list (the <ul> element). 
-- item_class: a class or classes to apply to the list items (the <li> elements).
-- link_class: a class or classes to apply to the links (the <a> elements).
+- list_class: a class or classes to apply to the overall list (the \<ul> element). 
+- item_class: a class or classes to apply to the list items (the \<li> elements).
+- link_class: a class or classes to apply to the links (the \<a> elements).
 - password: if the shortcode is password protected, a valid password must be supplied.
 
 If there are errors, the "empty" text is displayed unless the current user has edit rights,
@@ -105,7 +107,7 @@ in which case an error message is shown.
 ### Can I use custom slugs?
 Yes! You can choose any alphanumeric slug (letters, numbers, hyphens, underscores).
 
-### How do I track more visitor data?
+### How does the plugin track visitor data?
 The plugin automatically tracks:
 - IP address
 - Device/browser (via user agent)
@@ -119,9 +121,15 @@ All associated data (destinations, click records) are permanently deleted.
 
 ## Changelog
 
+### 1.1.0 2025-10-06
+- Added support for a custom link prefix.
+- Added the ability to select IP address provider.
+- Added an IP lookup screen to test lookup credentials.
+- Fixed documentation errors.
+
 ### 1.0.0 2025-09-23
 - Adapted from links plugin 1.4.3 by Lukastech
-- Extracted views into PenKnife templates.
+- Extracted views into Penknife templates.
 - Changed the link stub from "go" to "l", made it a constant.
 - Encapsulated everything in a class.
 - Link aliases are converted to a lowercase slug.

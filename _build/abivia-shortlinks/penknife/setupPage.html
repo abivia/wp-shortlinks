@@ -1,0 +1,49 @@
+<div class="wrap abisl-admin">
+    <div class="abisl-header">
+        <h1><span class="dashicons dashicons-admin-links"></span>Short Link Settings</h1>
+    </div>
+
+    <div class="abisl-card">
+        <!-- setupForm -->
+        {{?messages.form}}
+        <div class="notice notice-success is-dismissible">
+            <p>{{messages.form}}</p>
+        </div>
+        {{/?messages.form}}
+        <form method="post" class="abisl-form">
+            {{nonce}}
+            <div class="form-field">
+                <label for="abisl_prefix">Short URL Slug Prefix</label>
+                <input type="text" id="abisl_prefix" name="abisl_prefix" required class="regular-text" value="{{prefix}}">
+                {{error.prefix}}
+                <p class="description">
+                    Short link prefix. Only letters, numbers, hyphens, and underscores allowed (e.g., "my-link_123")<br>
+                    <strong>Warning: If you change this value, the URL of all existing short links will change.</strong>
+                </p>
+            </div>
+
+            <div class="form-field">
+                <label for="abisl_geo">Geo-lookup Provider</label>
+                <select name="abisl_geo" id="abisl_geo">
+                    <option value="ipapi" {{select_ipapi}}>ipapi.co</option>
+                    <option value="ipinfo" {{select_ipinfo}}>ipinfo.io</option>
+                    <option value="ipstack" {{select_ipstack}}>ipstack.com</option>
+                </select>
+                {{error.geo}}
+                <p class="description">IP address lookup provider</p>
+            </div>
+
+            <div class="form-field">
+                <label for="abisl_ipkey">Key/Token for Geo-lookup Provider</label>
+                <input type="text" id="abisl_ipkey" name="abisl_ipkey" class="regular-text" value="{{ipkey}}">
+                {{error.ipkey}}
+                <p class="description">
+                    Key or token for your lookup provider (if required).
+                </p>
+            </div>
+            {{submit}}
+
+        </form>
+        <!-- end setupForm -->
+    </div>
+</div>

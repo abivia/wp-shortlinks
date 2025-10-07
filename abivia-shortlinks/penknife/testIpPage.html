@@ -1,0 +1,27 @@
+<div class="wrap abisl-admin">
+    <div class="abisl-header">
+        <h1><span class="dashicons dashicons-admin-links"></span>IP Lookup Test</h1>
+    </div>
+    <div class="abisl-card">
+        <!-- testIpForm -->
+        {{?messages.form}}
+        <div class="notice notice-success is-dismissible">
+            <p>{{messages.form}}</p>
+        </div>
+        {{/?messages.form}}
+        <form method="post" class="abisl-form">
+            {{nonce}}
+            <div class="form-field">
+                <label for="abisl_ip">IP Address</label>
+                <input type="text" id="abisl_ip" name="abisl_ip" required class="regular-text" value="{{ip}}">
+                {{error.ip}}
+                <p class="description">IP address</p>
+            </div>
+            {{submit}}
+        </form>
+        <!-- end testIpForm -->
+        <p>Country: {{countryCode}}</p>
+        <p>Region: {{regionCode}}</p>
+        <p>City: {{city}}</p>
+    </div>
+</div>

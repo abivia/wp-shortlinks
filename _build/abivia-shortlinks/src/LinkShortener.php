@@ -3,13 +3,20 @@ declare(strict_types=1);
 
 namespace Abivia\Wp\LinkShortener;
 
+use Abivia\Geocode\Geocoder;
+use Abivia\Geocode\LookupService\IpApiApi;
+use Abivia\Geocode\LookupService\IpInfoApi;
+use Abivia\Geocode\LookupService\IpStackApi;
 use Abivia\Penknife\ParseError;
 use Abivia\Penknife\Penknife;
+use Exception;
 use wpdb;
 
 class LinkShortener
 {
     const string DB_VERSION = '1.0.0';
+    const string SLUG_PREFIX = 'l';
+
     protected Clicks $clicks;
     protected Destinations $destinations;
     protected array $formData;
@@ -17,7 +24,7 @@ class LinkShortener
     protected Links $links;
     protected string $message = '';
     protected Penknife $penknife;
-    static string $slugPrefix = 'l';
+    protected string $slugPrefix = self::SLUG_PREFIX;
 
     public function __construct(private readonly string $baseMenuSlug, protected wpdb $dbc)
     {
@@ -27,17 +34,20 @@ class LinkShortener
         $this->penknife = new Penknife()->includePath(__DIR__ . '/../penknife');
     }
 
+    /**
+     * @return void
+     * @noinspection PhpUnused
+     */
     public function activate(): void
     {
         $this->createDb();
-        $this->addRewriteRule();
         flush_rewrite_rules();
     }
 
     public function addRewriteRule(): void
     {
         add_rewrite_rule(
-            '^' . self::$slugPrefix . '/([^/]+)/?$',
+            '^' . get_option('abisl_prefix', self::SLUG_PREFIX) . '/([^/]+)/?$',
             'index.php?abisl_slug=$matches[1]',
             'top'
         );
@@ -88,6 +98,7 @@ class LinkShortener
 
     public function analyticsPage(): void
     {
+        $this->checkSetup();
         $this->queueAdminAssets();
 
         // Handle deletion from overview
@@ -237,6 +248,16 @@ class LinkShortener
         }
     }
 
+    private function checkSetup(): void
+    {
+        $prefix = get_option('abisl_prefix');
+        if ($prefix === false) {
+            $this->setupPage();
+            exit;
+        }
+        $this->slugPrefix = $prefix;
+    }
+
     public function createDb(): void
     {
         $this->links->createTable();
@@ -251,6 +272,7 @@ class LinkShortener
 
     private function editPage($link = null): void
     {
+        $this->checkSetup();
         try {
             if ($link === null) {
                 $link = new Link();
@@ -261,18 +283,17 @@ class LinkShortener
                     }
                 }
             }
-            $this->loadForm($link);
+            $this->loadEditForm($link);
             // Process any request data
             $operation = $this->linkFormRequest();
 
             if ($operation === '') {
                 // No operation was performed. Either there was no data or there is an error.
                 // Merge in the additional fields for the form,
-                $slugPrefix = self::$slugPrefix;
                 $extra = [
                     'nonce' => wp_nonce_field('abisl_create_link', 'abisl_nonce', false),
-                    'aliasLink' => esc_html(home_url("/$slugPrefix/" . $link->alias)),
-                    'aliasUrl' => esc_url(home_url("/$slugPrefix/" . $link->alias)),
+                    'aliasLink' => esc_html(home_url("/$this->slugPrefix/" . $link->alias)),
+                    'aliasUrl' => esc_url(home_url("/$this->slugPrefix/" . $link->alias)),
                     'deleteLink' => esc_url(wp_nonce_url(
                         $this->myUrl("add&linkId=$link->linkId&delete=1"),
                         "abisl_delete_$link->linkId"
@@ -331,19 +352,26 @@ class LinkShortener
         if ($ipAddress === '0.0.0.0') {
             return $nullResult;
         }
-        $response = wp_remote_get("https://ipapi.co/$ipAddress/json/");
-
-        if (is_wp_error($response)) {
+        $auth = get_option('abisl_ipkey', '');
+        $service = match (get_option('abisl_geo', null)) {
+            'ipapi' => new IpApiApi($auth),
+            'ipinfo' => new IpInfoApi($auth),
+            'ipstack' => new IpStackApi($auth),
+            default => null,
+        };
+        if ($service === null) {
+            return $nullResult;
+        }
+        try {
+            $result = new Geocoder($service)->lookup($ipAddress);
+        } catch (Exception) {
             return $nullResult;
         }
 
-        $body = wp_remote_retrieve_body($response);
-        $data = json_decode($body, true);
-
         return [
-            'countryCode' => $data['country_code'] ?? null,
-            'regionCode' => $data['region_code'] ?? null,
-            'city' => $data['city'] ?? null,
+            'countryCode' => $result->getCountryCode(),
+            'regionCode' => $result->getAdministrativeArea(),
+            'city' => $result->getLocality(),
         ];
     }
 
@@ -393,6 +421,26 @@ class LinkShortener
             'abisl-add',
             function () {
                 $this->editPage();
+            }
+        );
+        add_submenu_page(
+            $this->baseMenuSlug,
+            'Settings',
+            'Settings',
+            'manage_options',
+            'abisl-setup',
+            function () {
+                $this->setupPage();
+            }
+        );
+        add_submenu_page(
+            $this->baseMenuSlug,
+            'Test IP Lookup',
+            'IP Test',
+            'manage_options',
+            'abisl-testip',
+            function () {
+                $this->testIpPage();
             }
         );
     }
@@ -483,8 +531,7 @@ class LinkShortener
                     $operation = 'updated';
                 }
 
-                $slugPrefix = self::$slugPrefix;
-                $shortUrl = home_url("/$slugPrefix/{$this->formData['alias']}");
+                $shortUrl = home_url("/$this->slugPrefix/{$this->formData['alias']}");
                 $this->formData['messages']['form'] = "Short link $operation successfully!"
                     . ' <a href="' . esc_url($shortUrl) . '" target="_blank">'
                     . esc_html($shortUrl) . '</a>';
@@ -520,7 +567,7 @@ class LinkShortener
     /**
      * @throws Problem
      */
-    private function loadForm(Link $link): void
+    private function loadEditForm(Link $link): void
     {
         $this->formData = (array) $link;
         $this->formData['destinations'] = (string) $this->destinations->get($link->linkId);
@@ -570,9 +617,10 @@ class LinkShortener
             $this->formData['message'] = $this->message;
             $this->message= '';
         }
-        $slugPrefix = self::$slugPrefix;
+
         foreach ($allLinks as $link) {
-            $link->shortUrl = home_url("/$slugPrefix/$link->alias");
+            $link->textLink = "/$this->slugPrefix/$link->alias";
+            $link->shortUrl = home_url($link->textLink);
             $link->copyUrl = esc_attr($link->shortUrl);
             $link->deleteUrl = esc_url(wp_nonce_url(
                 add_query_arg('delete', $link->linkId), 'abisl_delete_' . $link->linkId
@@ -731,6 +779,65 @@ class LinkShortener
         return $vars;
     }
 
+    private function setupPage(): void
+    {
+        $this->formData = [];
+        $this->formData['error'] = [];
+        if (
+            $_SERVER['REQUEST_METHOD'] === 'POST'
+            && check_admin_referer('abisl_create_link', 'abisl_nonce')
+        ) {
+            // Sanitize and validate POST data
+            $this->formData['prefix'] = strtolower(trim(sanitize_title($_POST['abisl_prefix'] ?? '')));
+            $this->formData['geo'] = strtolower(sanitize_text_field($_POST['abisl_geo'] ?? 'ipapi'));
+            $this->formData['ipkey'] = sanitize_text_field($_POST['abisl_ipkey'] ?? '');
+            if ($this->formData['prefix'] === '') {
+                $this->formData['error']['prefix'] = "Prefix can't be empty.";
+            }
+            if (!in_array($this->formData['geo'], ['ipapi', 'ipinfo', 'ipstack'])) {
+                $this->formData['error']['geo'] = "Invalid provider.";
+            }
+
+            // All checks pass, insert/update the link
+            if (count($this->formData['error']) === 0) {
+                update_option('abisl_prefix', $this->formData['prefix']);
+                update_option('abisl_geo', $this->formData['geo']);
+                update_option('abisl_ipkey', $this->formData['ipkey']);
+                $this->addRewriteRule();
+                $this->message = 'Settings saved.';
+                $this->overviewPage();
+                return;
+            }
+        } else {
+            $this->formData['prefix'] = get_option('abisl_prefix', $this->slugPrefix);
+            $this->formData['geo'] = get_option('abisl_geo', 'ipapi');
+            $this->formData['ipkey'] = get_option('abisl_ipkey', '');
+        }
+        try {
+            $this->queueAdminAssets();
+            $this->formData['nonce'] = wp_nonce_field('abisl_create_link', 'abisl_nonce', false);
+            $this->formData['submit'] = get_submit_button('Save Changes', 'primary', 'submit', false);
+
+            echo $this->penknife->format(
+                file_get_contents(__DIR__ . '/../penknife/setupPage.html'),
+                function (string $expr) {
+                    if (str_starts_with($expr, 'error.')) {
+                        $field = substr($expr, 6);
+                        return isset($this->formData['error'][$field])
+                            ? "<p>{$this->formData['error'][$field]}</p>"
+                            : '';
+                    }
+                    return $this->formData[$expr] ?? null;
+                }
+            );
+        } catch (ParseError $exception) {
+            echo '<div class="wrap abisl-admin">'
+                . $this->errorNotice('Template error.', true, $exception->getMessage())
+                . '</div>';
+        }
+
+    }
+
     /**
      * Insert the result of a shortcode call.
      * @param array $attributes
@@ -741,11 +848,10 @@ class LinkShortener
      */
     public function shortcode(array $attributes, ?string $content): string
     {
-        $slugPrefix = self::$slugPrefix;
         $attributes = shortcode_atts(
             [
                 'alias' => '',
-                'text' => home_url("/$slugPrefix/{$attributes['alias']}"),
+                'text' => home_url("/$this->slugPrefix/{$attributes['alias']}"),
                 'class' => ''
             ],
             $attributes
@@ -762,7 +868,7 @@ class LinkShortener
 
         $class = empty($attributes['class']) ? '' : ' class="' . esc_attr($attributes['class']) . '"';
         $text = esc_html($attributes['text']);
-        $url = esc_url(home_url("/$slugPrefix/{$attributes['alias']}"));
+        $url = esc_url(home_url("/$this->slugPrefix/{$attributes['alias']}"));
 
         return "<a href=\"$url\"$class>$text</a>";
     }
@@ -839,6 +945,52 @@ class LinkShortener
             self::$instance = new static('abisl', $wpdb);
         }
         return self::$instance;
+    }
+
+    private function testIpPage(): void
+    {
+        $this->formData = [];
+        $this->formData['error'] = [];
+        if (
+            $_SERVER['REQUEST_METHOD'] === 'POST'
+            && check_admin_referer('abisl_create_link', 'abisl_nonce')
+        ) {
+            // Sanitize and validate POST data
+            $this->formData['ip'] = strtolower(sanitize_text_field($_POST['abisl_ip'] ?? ''));
+            if ($this->formData['ip'] === '') {
+                $this->formData['error']['ip'] = "Address can't be empty.";
+            }
+
+            // Get the location data
+            if (count($this->formData['error']) === 0) {
+                $location = $this->geoCode($this->formData['ip']);
+                $this->formData = array_merge($this->formData, $location);
+            }
+        } else {
+            $this->formData['ip'] = '';
+        }
+        try {
+            $this->queueAdminAssets();
+            $this->formData['nonce'] = wp_nonce_field('abisl_create_link', 'abisl_nonce', false);
+            $this->formData['submit'] = get_submit_button('Geo Lookup', 'primary', 'submit', false);
+            echo $this->penknife->format(
+                file_get_contents(__DIR__ . '/../penknife/testIpPage.html'),
+                function (string $expr) {
+                    if (str_starts_with($expr, 'error.')) {
+                        $field = substr($expr, 6);
+                        return isset($this->formData['error'][$field])
+                            ? "<p>{$this->formData['error'][$field]}</p>"
+                            : '';
+                    }
+                    return $this->formData[$expr] ?? null;
+                }
+            );
+        } catch (ParseError $exception) {
+            echo '<div class="wrap abisl-admin">'
+                . $this->errorNotice('Template error.', true, $exception->getMessage())
+                . '</div>';
+        }
+
     }
 
     private function validateEditFormData(): void

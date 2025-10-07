@@ -196,6 +196,16 @@
 /* ======================
    Tables
    ====================== */
+table.inline-doc {
+    border: #000000 1px solid;
+    border-collapse: collapse;
+}
+
+.inline-doc td {
+    border: #000000 1px solid;
+    padding: 0.25rem 0.5rem;
+}
+
 .table-container {
     overflow-x: auto;
     margin-top: 1.25rem;

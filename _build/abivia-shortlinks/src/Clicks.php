@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Abivia\Wp\LinkShortener;
 
@@ -24,7 +25,7 @@ class Clicks extends DbTable
         $this->dbTable = "{$this->dbc->prefix}abisl_clicks";
     }
 
-    public function createTable()
+    public function createTable(): void
     {
         $charsetCollate = $this->dbc->get_charset_collate();
         $sqlClicks = "CREATE TABLE $this->dbTable ("
@@ -100,7 +101,7 @@ class Clicks extends DbTable
         ));
     }
 
-    private function whereFormats(array $where)
+    private function whereFormats(array $where): array
     {
         $formats = [];
         foreach (array_keys($where) as $key) {

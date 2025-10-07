@@ -1,12 +1,12 @@
-<?php /** @noinspection SqlNoDataSourceInspection */
+<?php
 /*
 Plugin Name: Abivia Short Links
 Description: A custom URL shortener with analytics, rotating links, and password protection.
-Version: 1.0.0
+Version: 0.1.0
 Author: Abivia Inc.
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
-Requires at least: 5.0
+Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 8.4
 */

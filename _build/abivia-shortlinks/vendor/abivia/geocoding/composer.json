@@ -1,0 +1,43 @@
+{
+  "name": "abivia/geocoding",
+  "type": "library",
+  "description": "Geocoding support.",
+  "keywords": [
+    "abivia", "geocode"
+  ],
+  "authors": [
+    {
+      "name": "Alan Langford",
+      "email": "foss@abivia.com",
+      "homepage": "https://foss.abivia.com",
+      "role": "Developer"
+    }
+  ],
+  "license": "MIT",
+  "require": {
+    "php": "^8.2",
+    "ext-curl": "*",
+    "abivia/cogs": "^2",
+    "mlocati/ip-lib": "^1",
+    "ext-pdo": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Abivia\\Geocode\\": "src/"
+    }
+  },
+  "repositories": [
+    {
+      "type": "path",
+      "url": "../cogs",
+      "canonical": false
+    }
+  ],
+  "config": {
+    "optimize-autoloader": true,
+    "preferred-install": "dist",
+    "sort-packages": true
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}

@@ -69,8 +69,12 @@
         Here case is significant.
     </li>
     <li>If multiple links match and URL rotation is not set, the first link is used.</li>
+    <li>
+        Since different lookup services return either region codes or region names,
+        it's a good idea to include both.
+    </li>
 </ol>
-<table>
+<table class="inline-doc">
     <tr>
         <td class="va-top">Simple link</td>
         <td>https://example.com</td>
@@ -100,9 +104,9 @@
     <tr>
         <td class="va-top">Geo-targeted by country and region</td>
         <td>
-            [CA,ON]https://example.ca/ontario<br>
-            [CA,AB]https://example.ca/alberta<br>
-            [CA,NT|NU|YT]https://example.ca/north<br>
+            [CA,ON|Ontario]https://example.ca/ontario<br>
+            [CA,AB|Alberta]https://example.ca/alberta<br>
+            [CA,NT|Northwest Territories|NU|Nunavut|YT|Yukon]https://example.ca/north<br>
             [CA,?]https://example.ca/alberta<br>
             [?]https://example.com<br>
         </td>
@@ -111,16 +115,16 @@
             Albertans will see a link to example.ca/alberta,<br>
             People in the Northwest Territories, Nunavut, and Yukon will see a link to example.ca/north,<br>
             All other Canadians will see a link to example.ca,<br>
-            Any other location will see example.com.
+            Any other location will see example.com.<br>
         </td>
     </tr>
     <tr>
         <td class="va-top">Geo-targeted by country, region, and town</td>
         <td>
-            [CA,ON,Toronto]https://example.ca/toronto<br>
-            [CA,ON,Ottawa]https://example.ca/ottawa<br>
-            [CA,ON,?]https://example.ca/ontario<br>
-            [CA,AB]https://example.ca/alberta<br>
+            [CA,ON|Ontario,Toronto]https://example.ca/toronto<br>
+            [CA,ON|Ontario,Ottawa]https://example.ca/ottawa<br>
+            [CA,ON|Ontario,?]https://example.ca/ontario<br>
+            [CA,AB|Alberta]https://example.ca/alberta<br>
             [CA,?]https://example.ca/<br>
             [?]https://example.com<br>
         </td>

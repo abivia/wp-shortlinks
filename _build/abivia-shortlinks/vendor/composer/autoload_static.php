@@ -4,17 +4,27 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitc682fd24eed02a479d3a78b5d22f9ae1
+class ComposerStaticInit5df05c9713b754228b5fb6aabe05be08
 {
     public static $prefixLengthsPsr4 = array (
+        'I' => 
+        array (
+            'IPLib\\' => 6,
+        ),
         'A' => 
         array (
             'Abivia\\Wp\\LinkShortener\\' => 24,
             'Abivia\\Penknife\\' => 16,
+            'Abivia\\Geocode\\' => 15,
+            'Abivia\\Cogs\\' => 12,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
+        'IPLib\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mlocati/ip-lib/src',
+        ),
         'Abivia\\Wp\\LinkShortener\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
@@ -22,6 +32,14 @@ class ComposerStaticInitc682fd24eed02a479d3a78b5d22f9ae1
         'Abivia\\Penknife\\' => 
         array (
             0 => __DIR__ . '/..' . '/abivia/penknife/Penknife',
+        ),
+        'Abivia\\Geocode\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/abivia/geocoding/src',
+        ),
+        'Abivia\\Cogs\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/abivia/cogs/src',
         ),
     );
 
@@ -32,9 +50,9 @@ class ComposerStaticInitc682fd24eed02a479d3a78b5d22f9ae1
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitc682fd24eed02a479d3a78b5d22f9ae1::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitc682fd24eed02a479d3a78b5d22f9ae1::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitc682fd24eed02a479d3a78b5d22f9ae1::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit5df05c9713b754228b5fb6aabe05be08::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit5df05c9713b754228b5fb6aabe05be08::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit5df05c9713b754228b5fb6aabe05be08::$classMap;
 
         }, null, ClassLoader::class);
     }

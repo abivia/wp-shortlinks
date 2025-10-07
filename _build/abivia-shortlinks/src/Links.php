@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Abivia\Wp\LinkShortener;
 
@@ -90,7 +91,7 @@ class Links extends DbTable
         );
     }
 
-    private function whereFormats(array $where)
+    private function whereFormats(array $where): array
     {
         $formats = [];
         foreach (array_keys($where) as $key) {
