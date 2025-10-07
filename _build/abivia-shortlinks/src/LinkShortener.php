@@ -817,6 +817,7 @@ class LinkShortener
             $this->queueAdminAssets();
             $this->formData['nonce'] = wp_nonce_field('abisl_create_link', 'abisl_nonce', false);
             $this->formData['submit'] = get_submit_button('Save Changes', 'primary', 'submit', false);
+            $this->formData['returnLink'] = esc_url($this->myUrl());
 
             echo $this->penknife->format(
                 file_get_contents(__DIR__ . '/../penknife/setupPage.html'),
@@ -973,6 +974,7 @@ class LinkShortener
             $this->queueAdminAssets();
             $this->formData['nonce'] = wp_nonce_field('abisl_create_link', 'abisl_nonce', false);
             $this->formData['submit'] = get_submit_button('Geo Lookup', 'primary', 'submit', false);
+            $this->formData['returnLink'] = esc_url($this->myUrl());
             echo $this->penknife->format(
                 file_get_contents(__DIR__ . '/../penknife/testIpPage.html'),
                 function (string $expr) {

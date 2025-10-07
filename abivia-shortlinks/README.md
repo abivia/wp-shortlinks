@@ -121,6 +121,9 @@ All associated data (destinations, click records) are permanently deleted.
 
 ## Changelog
 
+### 1.1.1 2025-10-07
+- Minor improvements: cancel buttons, add default text to the overview page.
+
 ### 1.1.0 2025-10-06
 - Added support for a custom link prefix.
 - Added the ability to select IP address provider.

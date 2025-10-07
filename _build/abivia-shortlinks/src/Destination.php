@@ -12,15 +12,16 @@ namespace Abivia\Wp\LinkShortener;
 class Destination
 {
     const string FUZZY_FLAG = '?';
-    public array $city;
-    public array $countryCode;
+    public array $city = [];
+    public array $countryCode = [];
     public bool $geoCoded;
-    public array $regionCode;
+    public array $regionCode = [];
     public ?string $text = null;
     public string $url;
 
     public function __toString(): string
     {
+        $this->normalize();
         $result = '['
             . implode('|', $this->countryCode)
             . ',' . implode('|', $this->regionCode)
@@ -28,11 +29,22 @@ class Destination
             . ']';
         if ($result === '[,,]') {
             $result = '';
+        } elseif (str_ends_with($result, ',,]')) {
+            $result = substr($result, 0, -3) . ']';
         }
         if ($this->text !== null && $this->text !== '') {
             $result .= "$this->text|";
         }
         return "$result$this->url";
+    }
+
+    public function normalize(): self
+    {
+        $this->countryCode = $this->unique($this->countryCode);
+        $this->regionCode = $this->unique($this->regionCode);
+        $this->city = $this->unique($this->city);
+
+        return $this;
     }
 
     public function parse(string $destination): self
@@ -77,7 +89,20 @@ class Destination
             }
             $result[] = $element;
         }
-        return $result;
+        return $this->unique($result);
+    }
+
+    private function unique(array $source) {
+        $mapped = [];
+        /** @var GeoSelector $selector */
+        foreach ($source as $selector) {
+            $key = ($selector->fuzzy ? '?' : '') . strtolower($selector->value ?? '');
+            if (isset($mapped[$key])) {
+                continue;
+            }
+            $mapped[$key] = $selector;
+        }
+        return array_values($mapped);
     }
 
 }

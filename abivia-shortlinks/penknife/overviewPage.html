@@ -25,7 +25,8 @@
             <table class="wp-list-table widefat fixed striped">
                 <thead>
                 <tr>
-                    <th>Short URL</th>
+                    <th class="abisl-first">Short URL</th>
+                    <th>Default Text</th>
                     <th class="abisl-date">Last Click At</th>
                     <th class="abisl-count">#Clicks</th>
                     <th class="abisl-count">#Links</th>
@@ -51,6 +52,7 @@
                             </span>
                         </div>
                     </td>
+                    <td>{{loop.defaultText}}</td>
                     <td class="abisl-date">{{loop.lastClick,No Clicks}}</td>
                     <td class="abisl-count">{{loop.totalClicks}}</td>
                     <td class="abisl-count">{{loop.totalLinks}}</td>

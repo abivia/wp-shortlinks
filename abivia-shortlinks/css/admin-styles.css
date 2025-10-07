@@ -206,6 +206,10 @@ table.inline-doc {
     padding: 0.25rem 0.5rem;
 }
 
+.ip-table th {
+    text-align: right;
+}
+
 .table-container {
     overflow-x: auto;
     margin-top: 1.25rem;
@@ -235,6 +239,10 @@ table.inline-doc {
 
 .wp-list-table th.abisl-date {
     width: 19ex;
+}
+
+.wp-list-table th.abisl-first {
+    width: 25ex;
 }
 
 .wp-list-table td.abisl-flag {

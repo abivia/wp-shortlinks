@@ -53,16 +53,16 @@
         },
         {
             "name": "abivia/geocoding",
-            "version": "3.0.0",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/abivia/geocoding.git",
-                "reference": "ede6d58bd7c24cdf799881b1e272e00d520eec86"
+                "reference": "eabdd3a9c6118566553929c070228b7dd2fb4d90"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/abivia/geocoding/zipball/ede6d58bd7c24cdf799881b1e272e00d520eec86",
-                "reference": "ede6d58bd7c24cdf799881b1e272e00d520eec86",
+                "url": "https://api.github.com/repos/abivia/geocoding/zipball/eabdd3a9c6118566553929c070228b7dd2fb4d90",
+                "reference": "eabdd3a9c6118566553929c070228b7dd2fb4d90",
                 "shasum": ""
             },
             "require": {
@@ -97,9 +97,9 @@
             ],
             "support": {
                 "issues": "https://github.com/abivia/geocoding/issues",
-                "source": "https://github.com/abivia/geocoding/tree/3.0.0"
+                "source": "https://github.com/abivia/geocoding/tree/3.0.1"
             },
-            "time": "2025-10-06T20:59:53+00:00"
+            "time": "2025-10-07T16:00:45+00:00"
         },
         {
             "name": "abivia/penknife",
